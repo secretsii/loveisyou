@@ -631,104 +631,146 @@
             box-shadow: 0 8px 20px rgba(255, 126, 185, 0.4);
         }
 
-        /* Gallery Styles - Photo Spinner */
-        .gallery-container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* === GALLERY FIX - 3 KOLOM DI SEMUA DEVICE === */
+.gallery-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 20px;
-            justify-items: center;
-            align-items: center;
-            padding: 20px;
-            width: 100%;
-            max-width: 1000px; /* biar ga terlalu lebar di desktop */
-            margin: 0 auto;
-        }
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 KOLOM SELALU */
+    gap: 8px;
+    justify-items: center;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    margin: 0 auto;
+}
 
+/* Container foto persegi 1:1 */
+.photo-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    perspective: 1000px;
+}
 
-            /* --- Flip container --- */
-            .photo-container {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            perspective: 1000px; /* efek kedalaman 3D */
-        }
+.photo-spinner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease-in-out;
+    cursor: pointer;
+}
 
-            /* --- Elemen yang akan berputar --- */
-            .photo-spinner {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.8s ease-in-out; /* buat animasi smooth */
-            cursor: pointer;
-        }
+.photo-spinner.flipped {
+    transform: rotateY(180deg);
+}
 
-            .photo-spinner.flipped {
-            transform: rotateY(180deg);
-        }
+.photo-front,
+.photo-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    backface-visibility: hidden;
+    overflow: hidden;
+    box-sizing: border-box;
+}
 
-            /* --- Depan & belakang kartu --- */
-            .photo-front,
-            .photo-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            backface-visibility: hidden; /* sembunyikan sisi belakang pas muter */
-            overflow: hidden;
-        }
+.photo-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+    display: block;
+}
 
-            /* --- Tampilan depan (foto) --- */
-            .photo-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-        }
+.photo-back {
+    background: linear-gradient(to bottom right, #ffc2de, #ffc2de);
+    color: #996e8c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Balsamiq Sans', cursive;
+    font-size: 0.7rem;
+    transform: rotateY(180deg);
+    padding: 6px;
+    flex-direction: column;
+    border-radius: 8px;
+    line-height: 1.2;
+}
 
-            /* --- Tampilan belakang (teks) --- */
-            .photo-back {
-            background: linear-gradient(to bottom right, #ffc2de, #ffc2de);
-            color: #996e8c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: 'Balsamiq Sans', cursive;
-            font-size: 1rem;
-            transform: rotateY(180deg);
-            padding: 15px;
-            flex-direction: column;
-        }
+.hidden-message {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
 
-        .hidden-message {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.message-subtitle {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    line-height: 1.2;
+}
 
-        .message-subtitle {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
+/* === RESPONSIVE TETAP 3 KOLOM === */
+@media (max-width: 768px) {
+    .gallery-grid {
+        gap: 6px;
+        padding: 8px;
+        /* TETAP 3 KOLOM */
+    }
+}
 
-        @media (max-width: 600px) {
-          .gallery-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2 kolom di HP */
-            gap: 12px;
-          }
-        }
+@media (max-width: 480px) {
+    .gallery-grid {
+        gap: 4px; /* Gap lebih kecil biar muat 3 kolom */
+        padding: 5px;
+        /* TETAP 3 KOLOM */
+    }
+    
+    .photo-back {
+        padding: 4px;
+        font-size: 0.65rem;
+    }
+    
+    .hidden-message {
+        font-size: 0.75rem;
+    }
+    
+    .message-subtitle {
+        font-size: 0.6rem;
+    }
+}
 
+/* Untuk HP sangat kecil, tetap 3 kolom */
+@media (max-width: 360px) {
+    .gallery-grid {
+        gap: 3px;
+    }
+    
+    .photo-back {
+        padding: 3px;
+        font-size: 0.6rem;
+    }
+    
+    .hidden-message {
+        font-size: 0.7rem;
+    }
+    
+    .message-subtitle {
+        font-size: 0.55rem;
+    }
+}
 
 
         /* Apple Music Inspired Player - Redesigned with Fixed Layout */
@@ -1960,16 +2002,6 @@
     // Update song info
     document.getElementById('totalTime').textContent = song.duration;
     
-    // ❌ Hapus bagian update active track supaya tampilan gak berubah
-    // const trackItems = document.querySelectorAll('.track-item');
-    // trackItems.forEach(item => {
-    //     item.classList.remove('active');
-    //     if (parseInt(item.dataset.index) === index) {
-    //         item.classList.add('active');
-    //     }
-    // });
-
-    // Reset progress
     currentProgress = 0;
     document.getElementById('progressBar').style.width = '0%';
     document.getElementById('currentTime').textContent = '0:00';
@@ -2033,6 +2065,30 @@
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }, 600);
 }
+
+// Force gallery layout refresh on mobile
+function refreshGalleryLayout() {
+    const photoContainers = document.querySelectorAll('.photo-container');
+    photoContainers.forEach(container => {
+        // Force square aspect ratio
+        const width = container.offsetWidth;
+        container.style.height = width + 'px';
+    });
+}
+
+// Panggil saat halaman dimuat dan saat resize
+document.addEventListener('DOMContentLoaded', function() {
+    refreshGalleryLayout();
+    window.addEventListener('resize', refreshGalleryLayout);
+    
+    // Juga panggil saat masuk ke gallery
+    const galleryBtn = document.querySelector('.menu-item[onclick="showContent(\'gallery\')"]');
+    if (galleryBtn) {
+        galleryBtn.addEventListener('click', function() {
+            setTimeout(refreshGalleryLayout, 100);
+        });
+    }
+});
 
     </script>
 </body>
